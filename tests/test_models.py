@@ -1,20 +1,24 @@
 """Tests for statistics functions within the Model layer."""
 
+import pytest
 import numpy as np
 import numpy.testing as npt
 
 
-def test_daily_mean_zeros():
+@pytest.mark.parametrize(
+    "test,expected",
+    [
+        ([[0, 0], [0, 0], [0, 0]], [0, 0]),
+        ([[1, 2], [3, 4], [5, 6]], [3, 4]),
+    ],
+    ids=("case_one", "case_two")
+)
+def test_daily_mean(test, expected):
     """Test that mean function works for an array of zeros."""
     from inflammation.models import daily_mean
 
-    test_input = np.array([[0, 0],
-                           [0, 0],
-                           [0, 0]])
-    test_result = np.array([0, 0])
-
     # Need to use Numpy testing functions to compare arrays
-    npt.assert_array_equal(daily_mean(test_input), test_result)
+    npt.assert_array_equal(daily_mean(test), expected)
 
 
 def test_daily_mean_integers():
